@@ -33,11 +33,9 @@ if(!imageName) return
           setTotalImages(data.totalHits);
         } catch (erro) {
           setError(erro);
-          console.log(error);
         } finally {
           setLoading(false);
         }
-      
     };
 
     fetchData();
