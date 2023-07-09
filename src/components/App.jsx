@@ -16,7 +16,6 @@ export function App() {
   const [totalImages, setTotalImages] = useState(0);
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
   // const prevImageNameRef = useRef('');
@@ -31,15 +30,15 @@ if(!imageName) return
           const data = await fetchPost(imageName, page);
           setImages(prev =>[...prev, ...data.hits]);
           setTotalImages(data.totalHits);
-        } catch (erro) {
-          setError(erro);
+        } catch (error) {
+          console.log("🚀 ~ file: App.jsx:34 ~ fetchData ~ error:", error)
         } finally {
           setLoading(false);
         }
     };
 
     fetchData();
-  }, [imageName,  page]);
+  }, [ imageName, page]);
   
 const onSubmit = query => {
   if (imageName !== query) {
