@@ -1,29 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SearchBarHeader } from './SearchBar.styled';
 import PropTypes from 'prop-types';
 
+export const SearchBar = ({ onSubmit }) => {
+  const [inputValue, setInputValue] = useState('');
 
-export class SearchBar extends React.PureComponent  {
- handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    const input = event.target.elements.searchInput.value;
-    this.props.onSubmit(input);
+    onSubmit(inputValue);
   };
 
-  render() {
+  const handleChange = event => {
+    setInputValue(event.target.value);
+  };
+
   return (
     <>
       <SearchBarHeader>
-        <form className="SearchForm" onSubmit={this.handleSubmit}>
-          <button
-            type="submit"
-            onSubmit={this.handleSubmit}
-            className="SearchForm-button"
-          >
+        <form className="SearchForm" onSubmit={handleSubmit}>
+          <button type="submit" className="SearchForm-button">
             <span className="button-label">🔍</span>
           </button>
 
           <input
+            value={inputValue}
+            onChange={handleChange}
             id="searchInput"
             className="SearchForm-input"
             type="text"
@@ -35,8 +36,6 @@ export class SearchBar extends React.PureComponent  {
       </SearchBarHeader>
     </>
   );
-}
-  
 };
 
 SearchBar.propTypes = {

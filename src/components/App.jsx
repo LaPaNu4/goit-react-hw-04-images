@@ -1,5 +1,5 @@
 import { AppS } from './App.styled';
-import React from 'react';
+import { useState, useEffect } from 'react';
 
 import { SearchBar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -10,60 +10,49 @@ import { Modal } from './Modal/Modal';
 import { fetchPost } from 'services/api';
 
 export function App() {
-  const [imageName, setImageName] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const [images, setImages] = React.useState([]);
-  const [totalImages, setTotalImages] = React.useState(0);
-  const [page, setPage] = React.useState(1);
-  const [modalOpen, setModalOpen] = React.useState(false);
-  const [error, setError] = React.useState(null);
-  const [selectedImage, setSelectedImage] = React.useState(null);
+  const [imageName, setImageName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [images, setImages] = useState([]);
+  const [totalImages, setTotalImages] = useState(0);
+  const [page, setPage] = useState(1);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [error, setError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  const prevImageNameRef = React.useRef('');
-  const prevPageRef = React.useRef(1);
+  // const prevImageNameRef = useRef('');
+  // const prevPageRef = useRef(1);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
-      if (
-        imageName !== prevImageNameRef.current ||
-        page !== prevPageRef.current
-      ) {
+if(!imageName) return
         try {
           setLoading(true);
 
           const data = await fetchPost(imageName, page);
-          setImages([...images, ...data.hits]);
+          setImages(prev =>[...prev, ...data.hits]);
           setTotalImages(data.totalHits);
-        } catch (error) {
-          setError(error);
+        } catch (erro) {
+          setError(erro);
           console.log(error);
         } finally {
           setLoading(false);
         }
-      }
+      
     };
 
     fetchData();
-  }, [error, imageName, images, page]);
-
-    React.useEffect(() => {
-      prevImageNameRef.current = imageName;
-      prevPageRef.current = page;
-    }, [imageName, page]);
+  }, [imageName,  page]);
   
-const onSubmit = imageName => {
-  if (imageName !== prevImageNameRef.current) {
-    setImageName(imageName);
+const onSubmit = query => {
+  if (imageName !== query) {
+    setImageName(query);
     setPage(1);
     setImages([]);
     setTotalImages(0);
   }
 };
   const onLoadMore = () => {
-    // this.setState(prevState => ({
-    //   page: prevState.page + 1,
-    // }));
-    setPage(page + 1);
+    setPage(prev=>prev + 1);
   };
   const openModal = selectedImage => {
     // this.setState({ modalOpen: true, selectedImage });
