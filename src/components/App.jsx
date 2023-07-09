@@ -18,8 +18,6 @@ export function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // const prevImageNameRef = useRef('');
-  // const prevPageRef = useRef(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,13 +50,11 @@ const onSubmit = query => {
     setPage(prev=>prev + 1);
   };
   const openModal = selectedImage => {
-    // this.setState({ modalOpen: true, selectedImage });
     setModalOpen(true);
     setSelectedImage(selectedImage);
   };
 
   const closeModal = () => {
-    // this.setState({ modalOpen: false, selectedImage: null });
     setModalOpen(false);
     setSelectedImage(null);
   };
